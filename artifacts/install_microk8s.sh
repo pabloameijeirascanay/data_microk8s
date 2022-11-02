@@ -57,7 +57,8 @@ sudo snap alias microk8s.kubectl kubectl
 
 # Enable microk8s features
 sudo microk8s status --wait-ready
-sudo microk8s enable dns storage dashboard kube-ovn
+sudo microk8s enable dns storage dashboard
+microk8s enable kube-ovn --force
 
 echo "###########################################################################"
 echo "Microk8s specific configurations..." 
