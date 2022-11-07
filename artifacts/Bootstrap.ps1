@@ -15,7 +15,8 @@ param (
     [string]$workspaceName,
     [string]$deploySQLMI,
     [string]$deployPostgreSQL,
-    [string]$templateBaseUrl
+    [string]$templateBaseUrl,
+    [string]$arcDataClusterName
 )
 
 [System.Environment]::SetEnvironmentVariable('adminUsername', $adminUsername,[System.EnvironmentVariableTarget]::Machine)
@@ -35,6 +36,7 @@ param (
 [System.Environment]::SetEnvironmentVariable('deploySQLMI', $deploySQLMI,[System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('deployPostgreSQL', $deployPostgreSQL,[System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('templateBaseUrl', $templateBaseUrl,[System.EnvironmentVariableTarget]::Machine)
+[System.Environment]::SetEnvironmentVariable('arcDataClusterName', $arcDataClusterName,[System.EnvironmentVariableTarget]::Machine)
 
 # Create path
 Write-Output "Create deployment path"

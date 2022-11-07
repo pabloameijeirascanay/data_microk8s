@@ -1,10 +1,5 @@
 Start-Transcript -Path C:\Temp\DataServicesLogonScript.log
 
-# Deployment environment variables
-$Env:TempDir = "C:\Temp"
-$suffix=-join ((97..122) | Get-Random -Count 4 | % {[char]$_})
-$connectedClusterName="Arc-Data-GKE-K8s-$suffix"
-
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
 # Required for azcopy
@@ -96,7 +91,7 @@ $env:KUBECONTEXT = kubectl config current-context
 $env:KUBECONFIG = "C:\Users\$env:adminUsername\.kube\config"
 
 # Create Kubernetes - Azure Arc Cluster
-az connectedk8s connect --name $connectedClusterName `
+az connectedk8s connect --name $Env:arcDataClusterName `
                         --resource-group $env:resourceGroup `
                         --location $env:azureLocation `
                         --tags 'Project=jumpstart_azure_arc_data_services' `
@@ -110,7 +105,7 @@ Start-Sleep -Seconds 10
 az k8s-extension create --name arc-data-services `
                         --extension-type microsoft.arcdataservices `
                         --cluster-type connectedClusters `
-                        --cluster-name $connectedClusterName `
+                        --cluster-name $Env:arcDataClusterName `
                         --resource-group $env:resourceGroup `
                         --auto-upgrade false `
                         --scope cluster `
@@ -123,17 +118,20 @@ Do {
     $podStatus = $(if(kubectl get pods -n arc | Select-String "bootstrapper" | Select-String "Running" -Quiet){"Ready!"}Else{"Nope"})
     } while ($podStatus -eq "Nope")
 
-$connectedClusterId = az connectedk8s show --name $connectedClusterName --resource-group $env:resourceGroup --query id -o tsv
+$connectedClusterId = az connectedk8s show --name $Env:arcDataClusterName --resource-group $env:resourceGroup --query id -o tsv
 
 $extensionId = az k8s-extension show --name arc-data-services `
                                      --cluster-type connectedClusters `
-                                     --cluster-name $connectedClusterName ` --resource-group $env:resourceGroup `
+                                     --cluster-name $Env:arcDataClusterName ` --resource-group $env:resourceGroup `
                                      --query id -o tsv
 
 Start-Sleep -Seconds 20
 
 # Create Custom Location
-az customlocation create --name 'jumpstart-cl' `
+
+$customLocationName = "$Env:arcDataClusterName-cl" 
+
+az customlocation create --name $customLocationName `
                          --resource-group $env:resourceGroup `
                          --namespace arc `
                          --host-resource-id $connectedClusterId `
@@ -145,7 +143,7 @@ Write-Host "Create Azure Monitor for containers Kubernetes extension instance"
 Write-Host "`n"
 
 az k8s-extension create --name "azuremonitor-containers" `
-                        --cluster-name $connectedClusterName `
+                        --cluster-name $Env:arcDataClusterName `
                         --resource-group $env:resourceGroup `
                         --cluster-type connectedClusters `
                         --extension-type Microsoft.AzureMonitor.Containers
@@ -154,7 +152,7 @@ az k8s-extension create --name "azuremonitor-containers" `
 Write-Host "Create Azure Defender Kubernetes extension instance"
 Write-Host "`n"
 az k8s-extension create --name "azure-defender" `
-                        --cluster-name $connectedClusterName `
+                        --cluster-name $Env:arcDataClusterName `
                         --resource-group $env:resourceGroup `
                         --cluster-type connectedClusters `
                         --extension-type Microsoft.AzureDefender.Kubernetes
@@ -163,7 +161,7 @@ az k8s-extension create --name "azure-defender" `
 Write-Host "Deploying Azure Arc Data Controller"
 Write-Host "`n"
 
-$customLocationId = $(az customlocation show --name "jumpstart-cl" --resource-group $env:resourceGroup --query id -o tsv)
+$customLocationId = $(az customlocation show --name $customLocationName --resource-group $env:resourceGroup --query id -o tsv)
 $workspaceId = $(az resource show --resource-group $env:resourceGroup --name $env:workspaceName --resource-type "Microsoft.OperationalInsights/workspaces" --query properties.customerId -o tsv)
 $workspaceKey = $(az monitor log-analytics workspace get-shared-keys --resource-group $env:resourceGroup --workspace-name $env:workspaceName --query primarySharedKey -o tsv)
 

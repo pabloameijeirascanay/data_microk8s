@@ -7,8 +7,9 @@ $controllerName = "jumpstart-dc"
 Write-Host "Deploying Azure Arc-enabled PostgreSQL"
 Write-Host "`n"
 
-$customLocationId = $(az customlocation show --name "jumpstart-cl" --resource-group $env:resourceGroup --query id -o tsv)
-$dataControllerId = $(az resource show --resource-group $env:resourceGroup --name $controllerName --resource-type "Microsoft.AzureArcData/dataControllers" --query id -o tsv)
+$customLocationName = (Get-AzResource -ResourceGroupName $Env:resourceGroup -ResourceType Microsoft.ExtendedLocation/customLocations).Name
+$dataControllerId = $(az resource show --resource-group $Env:resourceGroup --name $controllerName --resource-type "Microsoft.AzureArcData/dataControllers" --query id -o tsv)
+$customLocationId = $(az customlocation show --name $customlocationName --resource-group $Env:resourceGroup --query id -o tsv)
 
 ################################################
 # Localize ARM template
