@@ -1,13 +1,19 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": { 
-  "arcDataClusterName": {
-    "type": "string",
-    "metadata": {
-      "description": "Arc Data Cluster Name"
-    }
-  },
+  "parameters": {
+    "arcDataClusterName": {
+      "type": "string",
+      "metadata": {
+        "description": "Arc Data Cluster Name"
+      }
+    },
+    "customLocationRPOID": {
+      "type": "string",
+      "metadata": {
+        "description": "Custom Location Resource Provider Object ID"
+      }
+    },
     "myIpAddress": {
       "type": "string",
       "metadata": {
@@ -358,7 +364,6 @@
       }
     }
   ],
-
   "outputs": {
     "adminUsername": {
       "type": "string",
