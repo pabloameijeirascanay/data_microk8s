@@ -8,7 +8,7 @@
         "description": "Username for Windows account"
       }
     },
-    "CL_OID": {
+    "customLocationRPOID": {
       "type": "string",
       "metadata": {
         "description": "Custom Location Resource Provider Object ID"
