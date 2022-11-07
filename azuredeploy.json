@@ -8,6 +8,12 @@
         "description": "Username for Windows account"
       }
     },
+    "CL_OID": {
+      "type": "string",
+      "metadata": {
+        "description": "Custom Location Resource Provider Object ID"
+      }
+    },
     "windowsAdminPassword": {
       "type": "securestring",
       "minLength": 12,
@@ -211,6 +217,9 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
+          "CL_OID": {
+            "value": "[parameters('CL_OID')]"
+          },
           "arcDataClusterName": {
             "value": "[variables('arcDataClusterName')]"
           },

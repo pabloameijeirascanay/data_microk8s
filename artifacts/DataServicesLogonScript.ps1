@@ -129,14 +129,18 @@ Start-Sleep -Seconds 20
 
 # Create Custom Location
 
-$customLocationName = "$Env:arcDataClusterName-cl" 
+az connectedk8s enable-features -n $connectedClusterName `
+                                -g $Env:resourceGroup `
+                                --custom-locations-oid $Env:CL_OID `
+                                --features cluster-connect custom-locations
 
-az customlocation create --name $customLocationName `
+
+$customLocationName = "$Env:arcDataClusterName-cl" 
+az customlocation create --name $customlocationName `
                          --resource-group $env:resourceGroup `
                          --namespace arc `
                          --host-resource-id $connectedClusterId `
-                         --cluster-extension-ids $extensionId `
-                         --kubeconfig $env:KUBECONFIG
+                         --cluster-extension-ids $extensionId
 
 # Deploying Azure Monitor for containers Kubernetes extension instance
 Write-Host "Create Azure Monitor for containers Kubernetes extension instance"
