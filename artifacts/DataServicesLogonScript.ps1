@@ -131,7 +131,7 @@ Start-Sleep -Seconds 20
 
 az connectedk8s enable-features -n $connectedClusterName `
                                 -g $Env:resourceGroup `
-                                --custom-locations-oid $Env:CL_OID `
+                                --custom-locations-oid $Env:customLocationRPOID `
                                 --features cluster-connect custom-locations
 
 

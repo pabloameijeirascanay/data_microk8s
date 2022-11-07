@@ -217,8 +217,8 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "CL_OID": {
-            "value": "[parameters('CL_OID')]"
+          "customLocationRPOID": {
+            "value": "[parameters('customLocationRPOID')]"
           },
           "arcDataClusterName": {
             "value": "[variables('arcDataClusterName')]"
