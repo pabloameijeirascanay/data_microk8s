@@ -8,12 +8,6 @@
         "description": "Username for Windows account"
       }
     },
-    "customLocationRPOID": {
-      "type": "string",
-      "metadata": {
-        "description": "Custom Location Resource Provider Object ID"
-      }
-    },
     "windowsAdminPassword": {
       "type": "securestring",
       "minLength": 12,
@@ -98,6 +92,12 @@
         "description": "Random GUID for cluster names"
       },
       "defaultValue": "[substring(newGuid(),0,4)]"
+    },
+    "customLocationRPOID": {
+      "type": "string",
+      "metadata": {
+        "description": "Custom Location Resource Provider Object ID"
+      }
     }
   },
   "variables": {
@@ -217,11 +217,11 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "customLocationRPOID": {
-            "value": "[parameters('customLocationRPOID')]"
-          },
           "arcDataClusterName": {
             "value": "[variables('arcDataClusterName')]"
+          },
+          "customLocationRPOID": {
+            "value": "[parameters('customLocationRPOID')]"
           },
           "windowsAdminUsername": {
             "value": "[parameters('windowsAdminUsername')]"
