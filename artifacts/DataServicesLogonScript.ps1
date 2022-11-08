@@ -1,5 +1,8 @@
 Start-Transcript -Path C:\Temp\DataServicesLogonScript.log
 
+# Deployment environment variables
+$Env:TempDir = "C:\Temp"
+
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
 # Required for azcopy
@@ -129,7 +132,7 @@ Start-Sleep -Seconds 20
 
 # Create Custom Location
 
-az connectedk8s enable-features -n $connectedClusterName `
+az connectedk8s enable-features -n $Env:arcDataClusterName `
                                 -g $Env:resourceGroup `
                                 --custom-locations-oid $Env:customLocationRPOID `
                                 --features cluster-connect custom-locations
