@@ -64,6 +64,10 @@ $pgWorkerPodName = "jumpstartps-0"
         $buildService = $(if((kubectl get pods -n arc | Select-String $pgWorkerPodName| Select-String "Running" -Quiet)){"Ready!"}Else{"Nope"})
     } while ($buildService -eq "Nope")
 
+Write-Host "`n"
+Write-Host "Azure Arc-enabled PostgreSQL is ready!"
+Write-Host "`n"
+
 Start-Sleep -Seconds 60
 
 # Downloading demo database and restoring onto Postgres
