@@ -7,14 +7,14 @@ $Endpoints = "C:\Temp\SQLMIEndpoints.txt"
 # Retrieving SQL MI connection endpoints
 Add-Content $Endpoints "Primary SQL Managed Instance external endpoint:"
 $primaryEndpoint = kubectl get sqlmanagedinstances jumpstart-sql -n arc -o=jsonpath='{.status.endpoints.primary}'
-$primaryEndpoint = $primaryEndpoint.Substring(0, $primaryEndpoint.IndexOf(',')) + ",11433" | Add-Content $Endpoints
+$primaryEndpoint = $primaryEndpoint.Substring(0, $primaryEndpoint.IndexOf(',')) + ",31111" | Add-Content $Endpoints
 Add-Content $Endpoints ""
 
 if ( $env:SQLMIHA -eq $true )
 {
     Add-Content $Endpoints "Secondary SQL Managed Instance external endpoint:"
     $secondaryEndpoint = kubectl get sqlmanagedinstances jumpstart-sql -n arc -o=jsonpath='{.status.endpoints.secondary}'
-    $secondaryEndpoint = $secondaryEndpoint.Substring(0, $secondaryEndpoint.IndexOf(',')) + ",11433" | Add-Content $Endpoints
+    $secondaryEndpoint = $secondaryEndpoint.Substring(0, $secondaryEndpoint.IndexOf(',')) + ",31111" | Add-Content $Endpoints
 }
 
 # Retrieving SQL MI connection username and password

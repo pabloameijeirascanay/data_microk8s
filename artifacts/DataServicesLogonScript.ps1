@@ -225,15 +225,17 @@ if ( $env:deploySQLMI -eq $true -or $env:deployPostgreSQL -eq $true ){
     Copy-Item -Path "$Env:TempDir\settingsTemplate.json" -Destination "C:\Users\$env:adminUsername\AppData\Roaming\azuredatastudio\User\settings.json"
 
     # Creating desktop url shortcuts for built-in Grafana and Kibana services 
-    $GrafanaURL = kubectl get service/metricsui-external-svc -n arc -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
-    $GrafanaURL = "https://"+$GrafanaURL+":3000"
+    $nodePrivateIP = az vm show -g Arc-Data-Microk8s -n arc-data-microk8s-k8s --query privateIps -d --out tsv
+    
+    $GrafanaPort = kubectl get service/metricsui-external-svc -n arc -o jsonpath='{.spec.ports[].nodePort}'
+    $GrafanaURL = "https://"+$nodePrivateIP+":$GrafanaPort"
     $Shell = New-Object -ComObject ("WScript.Shell")
     $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\Grafana.url")
     $Favorite.TargetPath = $GrafanaURL;
     $Favorite.Save()
 
-    $KibanaURL = kubectl get service/logsui-external-svc -n arc -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
-    $KibanaURL = "https://"+$KibanaURL+":5601"
+    $KibanaPort = kubectl get service/logsui-external-svc -n arc -o jsonpath='{.spec.ports[].nodePort}'
+    $KibanaURL = "https://"+$nodePrivateIP+":$KibanaPort"
     $Shell = New-Object -ComObject ("WScript.Shell")
     $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\Kibana.url")
     $Favorite.TargetPath = $KibanaURL;
