@@ -34,11 +34,11 @@ $numWorkers = 1
 
 $PSQLParams = "C:\Temp\postgreSQL.parameters.json"
 
-(Get-Content -Path $PSQLParams) -replace 'resourceGroup-stage',$env:resourceGroup | Set-Content -Path $PSQLParams
+(Get-Content -Path $PSQLParams) -replace 'resourceGroup-stage',$Env:resourceGroup | Set-Content -Path $PSQLParams
 (Get-Content -Path $PSQLParams) -replace 'dataControllerId-stage',$dataControllerId | Set-Content -Path $PSQLParams
 (Get-Content -Path $PSQLParams) -replace 'customLocation-stage',$customLocationId | Set-Content -Path $PSQLParams
-(Get-Content -Path $PSQLParams) -replace 'subscriptionId-stage',$env:subscriptionId | Set-Content -Path $PSQLParams
-(Get-Content -Path $PSQLParams) -replace 'azdataPassword-stage',$env:AZDATA_PASSWORD | Set-Content -Path $PSQLParams
+(Get-Content -Path $PSQLParams) -replace 'subscriptionId-stage',$Env:subscriptionId | Set-Content -Path $PSQLParams
+(Get-Content -Path $PSQLParams) -replace 'azdataPassword-stage',$Env:AZDATA_PASSWORD | Set-Content -Path $PSQLParams
 (Get-Content -Path $PSQLParams) -replace 'serviceType-stage',$ServiceType | Set-Content -Path $PSQLParams
 (Get-Content -Path $PSQLParams) -replace 'coordinatorCoresRequest-stage',$coordinatorCoresRequest | Set-Content -Path $PSQLParams
 (Get-Content -Path $PSQLParams) -replace 'coordinatorMemoryRequest-stage',$coordinatorMemoryRequest | Set-Content -Path $PSQLParams
@@ -52,7 +52,7 @@ $PSQLParams = "C:\Temp\postgreSQL.parameters.json"
 (Get-Content -Path $PSQLParams) -replace 'backupsSize-stage',$backupsStorageSize | Set-Content -Path $PSQLParams
 (Get-Content -Path $PSQLParams) -replace 'numWorkersStage',$numWorkers | Set-Content -Path $PSQLParams
 
-az deployment group create --resource-group $env:resourceGroup --template-file "C:\Temp\postgreSQL.json" --parameters "C:\Temp\postgreSQL.parameters.json"
+az deployment group create --resource-group $Env:resourceGroup --template-file "C:\Temp\postgreSQL.json" --parameters "C:\Temp\postgreSQL.parameters.json"
 Write-Host "`n"
 
 # Ensures postgres container is initiated and ready to accept restores
@@ -89,10 +89,10 @@ $pgsqlstring = kubectl get postgresql jumpstartps -n arc -o=jsonpath='{.status.p
 # Replace placeholder values in settingsTemplate.json
 (Get-Content -Path $settingsTemplate) -replace 'arc_postgres_host',$pgsqlstring.split(":")[0] | Set-Content -Path $settingsTemplate
 (Get-Content -Path $settingsTemplate) -replace 'arc_postgres_port',$pgsqlstring.split(":")[1] | Set-Content -Path $settingsTemplate
-(Get-Content -Path $settingsTemplate) -replace 'ps_password',$env:AZDATA_PASSWORD | Set-Content -Path $settingsTemplate
+(Get-Content -Path $settingsTemplate) -replace 'ps_password',$Env:AZDATA_PASSWORD | Set-Content -Path $settingsTemplate
 
 # If SQL MI isn't being deployed, clean up settings file
-if ( $env:deploySQLMI -eq $false )
+if ( $Env:deploySQLMI -eq $false )
 {
      $string = Get-Content -Path $settingsTemplate | Select-Object -First 9 -Last 24
      $string | Set-Content -Path $settingsTemplate

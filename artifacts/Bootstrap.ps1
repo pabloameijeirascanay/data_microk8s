@@ -17,7 +17,8 @@ param (
     [string]$deployPostgreSQL,
     [string]$templateBaseUrl,
     [string]$arcDataClusterName,
-    [string]$customLocationRPOID
+    [string]$customLocationRPOID,
+    [string]$vmMicrok8sName
 )
 
 [System.Environment]::SetEnvironmentVariable('adminUsername', $adminUsername,[System.EnvironmentVariableTarget]::Machine)
@@ -39,6 +40,7 @@ param (
 [System.Environment]::SetEnvironmentVariable('templateBaseUrl', $templateBaseUrl,[System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('arcDataClusterName', $arcDataClusterName,[System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('customLocationRPOID', $customLocationRPOID,[System.EnvironmentVariableTarget]::Machine)
+[System.Environment]::SetEnvironmentVariable('vmMicrok8sName', $vmMicrok8sName,[System.EnvironmentVariableTarget]::Machine)
 
 # Create path
 Write-Output "Create deployment path"
