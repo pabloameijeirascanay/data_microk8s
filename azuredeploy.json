@@ -108,7 +108,7 @@
     }
   },
   "variables": {
-    "arcDataClusterName": "[concat('ArcBox-K3s','-',parameters('guid'))]",
+    "arcDataClusterName": "[concat('Arc-Data-Microk8s','-',parameters('guid'))]",
     "microk8sTemplateUrl": "[uri(parameters('templateBaseUrl'), 'ubuntuMicrok8s.json')]",
     "clientVmTemplateUrl": "[uri(parameters('templateBaseUrl'), 'clientVm.json')]",
     "mgmtStagingStorageUrl": "[uri(parameters('templateBaseUrl'), 'mgmtStagingStorage.json')]",
